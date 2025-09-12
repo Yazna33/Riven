@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ha2ked By Riven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Orbitron', monospace;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .glitch {
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            margin-top: 2rem;
+            position: relative;
+            color: #00ff00;
+            text-shadow: 
+                0 0 2px #00ff00,
+                0 0 4px #00ff00;
+            animation: glitch 0.3s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 90%, 100% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+        }
+        
+        .terminal {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            margin: 3rem auto;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 
+                0 0 20px #00ff00,
+                inset 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+        
+        .terminal-header {
+            background: #00ff00;
+            color: #000;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .terminal-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff0000;
+        }
+        
+        .terminal-button:nth-child(2) {
+            background: #ffff00;
+        }
+        
+        .terminal-button:nth-child(3) {
+            background: #00ff00;
+        }
+        
+        .terminal-content {
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+        
+        .command-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: typeIn 0.5s forwards;
+        }
+        
+        .command-line:nth-child(1) { animation-delay: 0.5s; }
+        .command-line:nth-child(2) { animation-delay: 1s; }
+        .command-line:nth-child(3) { animation-delay: 1.5s; }
+        .command-line:nth-child(4) { animation-delay: 2s; }
+        .command-line:nth-child(5) { animation-delay: 2.5s; }
+        .command-line:nth-child(6) { animation-delay: 3s; }
+        .command-line:nth-child(7) { animation-delay: 3.5s; }
+        .command-line:nth-child(8) { animation-delay: 4s; }
+        
+        @keyframes typeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .prompt {
+            color: #ff0000;
+            margin-left: 5px;
+        }
+        
+        .command {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+        
+        .status {
+            color: #ffff00;
+        }
+        
+        .cursor {
+            display: inline-block;
+            background: #00ff00;
+            width: 10px;
+            height: 20px;
+            animation: blink 1s infinite;
+            margin-right: 5px;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff00;
+            opacity: 0.7;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
+        }
+        
+        .audio-hidden {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="scan-line"></div>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    <div class="particles" id="particles"></div>
+    
+    <div class="glitch">Ha2ked By Riven</div>
+    
+    <div class="terminal">
+        <div class="terminal-header">
+            <span>SYSTEM COMPROMISED - TERMINAL ACCESS</span>
+            <div class="terminal-buttons">
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+            </div>
+        </div>
+        
+        <div class="terminal-content">
+            <div class="command-line">
+                <span class="cursor"></span>
+                <span class="prompt">root@target:~#</span>
+                <span class="command"> ./exploit.sh --execute</span>
+            </div>
+            <div class="command-line">
+                <span class="status">[+] Scanning network vulnerabilities...</span>
+            </div>
+            <div class="command-line">
+                <span class="status">[+] Firewall bypassed successfully</span>
+            </div>
+            <div class="command-line">
+                <span class="status">[+] Escalating privileges...</span>
+            </div>
+            <div class="command-line">
+                <span class="status">[+] Root access granted</span>
+            </div>
+            <div class="command-line">
+                <span class="command">$ whoami</span>
+            </div>
+            <div class="command-line">
+                <span class="status">Riven - Elite Hacker</span>
+            </div>
+            <div class="command-line">
+                <span class="command">$ cat /etc/message</span>
+            </div>
+            <div class="command-line">
+                <span class="status">System successfully compromised by Riven</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- مشغل الصوت المخفي -->
+    <audio class="audio-hidden" autoplay loop>
+        <source src="https://rr5---sn-4g5edndk.googlevideo.com/videoplayback?expire=1757726529&ei=4XLEaI7_ELjIssUPhLmCsQo&ip=103.211.39.86&id=o-ACsDpFsCjqVoOSq4oLweg-DHxQviDvj2eOkk3Zf-Fx3_&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=ATw7iSUEa-qCy_c7o_ZEvMJzFcUUASOCFKW2y4z3exDU3_Hh0xGaM1PDv6W74aQtmrDiPNX4-8NC0mIk&vprv=1&svpuc=1&mime=audio%2Fmp4&ns=II2g_w5-QBHnZ3ZwFrZCoxsQ&rqh=1&gir=yes&clen=3931962&dur=242.903&lmt=1752693230526622&keepalive=yes&lmw=1&fexp=24350590,24350737,24350827,24351316,24351318,24351528,24352000,24352274,24352278,24352539,24352559,24352568,24352572,24352574,24352580,24352582,24352801,24352803,24352960,24352989,24352991,24353005,24353007,24353151,24353159,24353168,24353170,51557447,51565115,51565682,51580970&c=TVHTML5&sefc=1&txp=5432534&n=nY6TIjbdKofn7g&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRQIgYBuG3WLJTOOcHdo-Yzs_C0fgXGk_wYcqq3Oo-74uGb4CIQDI4u-DcUV3CjS0gyTfzJOkjC4BzJa2QQKNRJsuBt0vEw%3D%3D&rm=sn-1tx-itql7e,sn-h55ls7s,sn-4wgr7e&rrc=79,104,40&req_id=924b92fdaf62a3ee&rms=rdu,au&ipbypass=yes&redirect_counter=3&cms_redirect=yes&cmsv=e&met=1757704937,&mh=TB&mip=178.73.78.240&mm=34&mn=sn-4g5edndk&ms=ltu&mt=1757704630&mv=m&mvi=5&pl=22&lsparams=ipbypass,met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=APaTxxMwRAIgClqRnhcnJo_Jw_W2sNyvseK8MBp1YjMnCP7jKnTUlUECIBYLrufsn7xdQttVn0JVKHb76VvUZ7KJ1-6N_t-SOuIt" type="audio/mp4">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <script>
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+        const matrixArray = matrix.split("");
+        
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            for(let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Add glitch effect to random elements
+        setInterval(() => {
+            const elements = document.querySelectorAll('.command, .status');
+            const randomElement = elements[Math.floor(Math.random() * elements.length)];
+            if(randomElement) {
+                randomElement.style.textShadow = '2px 0 #ff0000, -2px 0 #00ffff';
+                setTimeout(() => {
+                    randomElement.style.textShadow = '0 0 5px #00ff00';
+                }, 100);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
